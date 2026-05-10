@@ -1,6 +1,8 @@
 # 6. Noctua Replacement Comparison
 
-All 80 × 25 mm, 12 V. The cap mod from [`../circuits/lrs-cap-mod.md`](../circuits/lrs-cap-mod.md) applies to all of them — it's a function of the LRS-vs-tach mismatch in the UPS, not the fan model.
+All Noctua **NF-A8** series — that's Noctua's 80 mm line, **80 × 80 × 25 mm**, 12 V. **Do not buy NF-A12 / NF-F12 / NF-S12 / NF-P12** — those are 120 mm and won't fit the B300R chassis.
+
+The cap mod from [`../circuits/lrs-cap-mod.md`](../circuits/lrs-cap-mod.md) applies to all of them — it's a function of the LRS-vs-tach mismatch in the UPS, not the fan model.
 
 | Fan                                     | RPM  | CFM  | Static Pressure | Noise | Bearing | MTTF @ 40 °C | Notes                                                                                                               |
 | --------------------------------------- | ---- | ---- | --------------- | ----- | ------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |

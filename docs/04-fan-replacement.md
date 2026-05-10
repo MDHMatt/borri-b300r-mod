@@ -66,11 +66,13 @@ With the stock fan still in place and the UPS running:
 
 If you don't see this LRS behaviour, *don't* assume the cap mod will work. Some later production runs of these UPSes use proper tach pulses instead — in which case you don't need the cap, but you do need a fan that hits the firmware's expected RPM range.
 
-## Recommended fan
+## Recommended fan (80 mm)
 
-Don't use a regular Noctua NF-A8 — its static pressure (~2.4 mmH₂O) is roughly half the Sanyo Denki's (4.8 mmH₂O), and a UPS chassis is a high-restriction airflow path. Use the **industrialPPC** range:
+The B300R takes **80 × 80 × 25 mm** fans — Noctua's `NF-A8` line. **Do not order the `NF-A12x25 iPPC-2000`** (that's the 120 mm version and the more commonly-discussed iPPC fan online — it will not fit).
 
-| Fan                              | RPM  | CFM  | Static pressure | Noise      | Notes                                                               |
+Don't use a regular Noctua NF-A8 either — its static pressure (~2.4 mmH₂O) is roughly half the Sanyo Denki's (4.8 mmH₂O), and a UPS chassis is a high-restriction airflow path. Use the **industrialPPC** range:
+
+| Fan (all 80 × 25 mm)             | RPM  | CFM  | Static pressure | Noise      | Notes                                                               |
 | -------------------------------- | ---- | ---- | --------------- | ---------- | ------------------------------------------------------------------- |
 | **NF-A8 industrialPPC-2000 PWM** | 2000 | 32.5 | 2.61 mmH₂O      | 19.4 dB(A) | **Recommended.** Quiet, IP52, 150,000 h MTTF.                       |
 | **NF-A8 industrialPPC-3000 PWM** | 3000 | 50.2 | 5.88 mmH₂O      | 28.4 dB(A) | If you want to *exceed* stock spec. Still ~6 dB quieter than stock. |
