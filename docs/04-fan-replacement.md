@@ -6,7 +6,7 @@ The fault you'll hit is the **FNLK** alarm code on the LCD ("UPS fan is locked /
 
 ## Why a straight swap fails
 
-The stock fan (`Sanyo Denki 9A0812S4D01`) has a **locked-rotor sensor** on the third wire, not a tachometer. The "S" in the part number is Sanyo Denki's suffix specifically for the LRS variant — the otherwise-identical "G" suffix (`9A0812G4D01`) is the tach-pulse version, which Borri did not specify.
+The stock fan (`Sanyo Denki 9A0812S4D01`) has a **locked-rotor sensor** on the third wire, not a tachometer. In Sanyo Denki's part-number scheme, the trailing `D01` is the sensor-type code (= locked rotor sensor); pulse-tach variants of the same fan family end in `01` (no `D`); the inner letter (`S`, `G`, …) is a *speed* code, not a sensor-type code. Both `9A0812S4D01` and the higher-airflow `9A0812G4D01` are LRS variants — there is no drop-in tach-pulse equivalent in this family of fans.
 
 The signal convention on the LRS wire is:
 
@@ -68,14 +68,21 @@ If you don't see this LRS behaviour, *don't* assume the cap mod will work. Some 
 
 ## Recommended fan (80 mm)
 
-The B300R takes **80 × 80 × 25 mm** fans — Noctua's `NF-A8` line. **Do not order the `NF-A12x25 iPPC-2000`** (that's the 120 mm version and the more commonly-discussed iPPC fan online — it will not fit).
+The B300R takes **80 × 80 × 25 mm** fans. There is no Noctua industrialPPC product in 80 mm — that line starts at 120 mm. Do not order an `NF-A12x25` (120 mm) — it will not fit.
 
-Don't use a regular Noctua NF-A8 either — its static pressure (~2.4 mmH₂O) is roughly half the Sanyo Denki's (4.8 mmH₂O), and a UPS chassis is a high-restriction airflow path. Use the **industrialPPC** range:
+Every quiet 80 mm fan on the market has lower static pressure than the stock 4.8 mmH₂O Sanyo Denki, so this is a noise-vs-airflow trade-off. Pick by use case:
 
-| Fan (all 80 × 25 mm)             | RPM  | CFM  | Static pressure | Noise      | Notes                                                               |
-| -------------------------------- | ---- | ---- | --------------- | ---------- | ------------------------------------------------------------------- |
-| **NF-A8 industrialPPC-2000 PWM** | 2000 | 32.5 | 2.61 mmH₂O      | 19.4 dB(A) | **Recommended.** Quiet, IP52, 150,000 h MTTF.                       |
-| **NF-A8 industrialPPC-3000 PWM** | 3000 | 50.2 | 5.88 mmH₂O      | 28.4 dB(A) | If you want to *exceed* stock spec. Still ~6 dB quieter than stock. |
+| Fan (all 80 × 25 mm, 12 V)                  | RPM  | CFM  | Static pressure | Noise      | Best for                                                                   |
+| ------------------------------------------- | ---- | ---- | --------------- | ---------- | -------------------------------------------------------------------------- |
+| **Noctua NF-A8 FLX + L.N.A. (in box)**      | 1650 | 24.4 | ~1.41 mmH₂O     | ~13 dB(A)  | **Recommended for desk-side use.** Inaudible past 1 m, decent thermal margin. |
+| Noctua NF-A8 FLX + U.L.N.A. (in box)        | 1200 | 17.0 | ~0.79 mmH₂O     | ~7 dB(A)   | Maximum-quiet, only safe at low UPS load.                                  |
+| Noctua NF-A8 ULN                            | 1400 | 22.5 | 1.34 mmH₂O      | 11.9 dB(A) | Pre-baked ultra-quiet alternative to FLX+ULNA.                             |
+| Noctua NF-A8 PWM                            | 2200 | 32.7 | 2.37 mmH₂O      | 17.7 dB(A) | If you want PWM auto-control (note: B300R doesn't drive PWM — see below).  |
+| Arctic P8 Max                               | 5000 | 40.0 | **5.3 mmH₂O**   | ~26 dB(A)  | The only 80 mm fan that exceeds stock SP — for high-load UPSes.            |
+
+**PWM caveat.** The B300R fan header has 3 pins (12 V, GND, sensor) and there is no PWM drive line. The UPS varies the +12 V rail with internal temperature, so a 4-pin Noctua simply runs at whatever speed the DC voltage allows — its PWM input does nothing. **3-pin Noctuas with the bundled L.N.A. / U.L.N.A. resistor cables are actually the better fit** because they let you choose a hard-capped maximum speed.
+
+Full breakdown including non-Noctua options (be quiet!, Arctic, Sanyo Denki) in [`06-noctua-comparison.md`](06-noctua-comparison.md).
 
 Full comparison in [`06-noctua-comparison.md`](06-noctua-comparison.md).
 

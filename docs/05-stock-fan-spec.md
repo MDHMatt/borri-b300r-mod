@@ -18,7 +18,12 @@
 | Approvals       | UL, CSA, TÜV                             |
 | Origin          | Made in the Philippines                  |
 
-The "**S**" in `9A0812**S**4D01` is Sanyo Denki's part-number suffix specifically for the locked-rotor-sensor variant. The "G" suffix (`9A0812G4D01`) is the otherwise-identical model with a tachometer/RPM signal output instead of LRS — this is **not** what's fitted to the B300R.
+In Sanyo Denki's part-number scheme, the trailing **`D01`** is the sensor-type code = *locked rotor sensor*. Pulse-tach variants of a fan family end in `01` (no leading `D`); no-sensor variants end in `02`. The single inner letter (`S`, `G`, etc.) is a *speed code*, not a sensor-type code:
+
+- `9A0812**S**4D01` — speed code `S` (3400 RPM, 42.4 CFM), **LRS** (`D01`). This is what's fitted to the B300R.
+- `9A0812**G**4D01` — speed code `G` (higher RPM, ~53 CFM), also **LRS** (`D01`).
+
+There is no drop-in tach-pulse equivalent in the 9A0812 family — both common variants are LRS. This is why the cap mod (see [`../circuits/lrs-cap-mod.md`](../circuits/lrs-cap-mod.md)) is the standard fix for adapting a Noctua tach line to this UPS.
 
 ## Why this matters
 
@@ -28,11 +33,11 @@ This determines the cooling-vs-acoustics envelope you have to fit a replacement 
 - **Airflow (42.4 CFM)** is the secondary number — useful if you're running the UPS at high load in a warm environment.
 - **Noise (34 dB(A))** is the headroom you have for improvement. Anything above ~25 dB(A) at the listening position is intrusive in a quiet room.
 
-## Why the Noctua match needs care
+## Why the replacement match needs care
 
-Generic 80 mm Noctuas (NF-A8 PWM, NF-A8 FLX, NF-R8 redux) have static pressures around 2.0–2.4 mmH₂O — roughly **half** the stock fan's. They'll move air, but not necessarily through the chassis effectively at high load.
+Every quiet 80 mm fan on the market has lower static pressure than this one. Noctua's 80 mm range (NF-A8 PWM, NF-A8 FLX, NF-A8 ULN, NF-R8 redux-1800 PWM) sits around 1.3–2.4 mmH₂O — roughly **half** the stock fan's 4.8 mmH₂O. They'll move air, but not necessarily through the chassis effectively at high load.
 
-The **industrialPPC** versions are designed exactly for this kind of duty (industrial enclosures, high-restriction airflow, 24/7 operation, sealed bearing). The iPPC-2000 hits 2.61 mmH₂O and the iPPC-3000 hits 5.88 mmH₂O — i.e. the iPPC-3000 *exceeds* stock spec on every metric while still being significantly quieter.
+Noctua does **not** make an industrialPPC variant in 80 mm — that line starts at 120 mm (`NF-F12`, `NF-A12x25`, `NF-A14`). The only 80 mm fan with static pressure that meets or exceeds stock is the **Arctic P8 Max** (5.3 mmH₂O, dual-ball bearing) — at the cost of higher noise.
 
 See [`06-noctua-comparison.md`](06-noctua-comparison.md) for the full comparison.
 

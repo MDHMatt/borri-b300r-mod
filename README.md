@@ -6,7 +6,7 @@ Notes, official manual, and modifications for the **Borri B300R** Rotation-serie
 
 - **What it is:** **Line-interactive** UPS with AVR (boost/buck), 1/1.5/2/3 kVA, RT/T form factor, end-of-life. Block diagram in the manual confirms: input filter → AVR → output, with separate charger/battery/DC-DC/inverter path that only feeds output during outages. Despite some reseller pages calling it "online double-conversion," it isn't.
 - **Talking to it:** RS232 + USB on the back, optional SNMP slot card. Speaks Megatec/Voltronic Q1 protocol — works with NUT's `blazer_usb` or `blazer_ser` driver. Borri's own software is **Winpower** (not Power Guardian — that's the Galileo/Leonardo software).
-- **Quiet fans:** Stock Sanyo Denki San Cooler 80 fans (80 × 80 × 25 mm) are 34 dB(A) screamers. The right replacement is the **Noctua NF-A8 industrialPPC-2000 PWM** — the 80 mm version, *not* the more commonly-talked-about 120 mm `NF-A12x25 iPPC-2000`. The UPS uses a **locked-rotor sensor**, not a tachometer, so a Noctua trips the FNLK alarm 5–15 min in. Fix is a **10 µF cap** between the tach line and GND, ~50p.
+- **Quiet fans:** Stock Sanyo Denki San Cooler 80 fans (80 × 80 × 25 mm) are 34 dB(A) screamers. There is no 80 mm Noctua industrialPPC — that range starts at 120 mm. For desk-side use the recommended swap is **Noctua NF-A8 FLX** (3-pin, includes L.N.A. and U.L.N.A. resistor cables) capped at 1650 RPM via the L.N.A. — ~13 dB(A), inaudible past 1 m. The UPS uses a **locked-rotor sensor**, not a tachometer, so any Noctua trips the FNLK alarm 5–15 min in. Fix is a **10 µF cap** between the tach line and GND, ~50p. Trade-off: every quiet 80 mm fan has roughly half the static pressure of stock — only safe at moderate UPS load.
 
 ## Repository layout
 

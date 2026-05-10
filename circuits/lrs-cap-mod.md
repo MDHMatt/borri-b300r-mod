@@ -8,7 +8,7 @@ See [`../docs/04-fan-replacement.md`](../docs/04-fan-replacement.md) for backgro
 
 | Item                 | Spec                                                                                   | Approx cost (UK) |
 | -------------------- | -------------------------------------------------------------------------------------- | ---------------- |
-| Replacement fan      | Noctua **NF-A8** industrialPPC-2000 PWM — **80 mm**, not the 120 mm NF-A12 (or alternate, see `../docs/06-noctua-comparison.md`) | £18–25           |
+| Replacement fan      | **Noctua NF-A8 FLX** (3-pin, 80 mm, includes L.N.A. and U.L.N.A. adapters) — see `../docs/06-noctua-comparison.md` for trade-offs and alternatives. The B300R doesn't drive PWM, so a 4-pin fan buys you nothing. | £15–18           |
 | Capacitor            | **10 µF / 50 V radial electrolytic** — Nichicon UVZ, Panasonic FC, Rubycon ZL all fine | < £0.50          |
 | Connector (UPS-side) | 3-pin JST-XH 2.54 mm female housing + crimp pins                                       | £1               |
 | Wire                 | Or just splice with the Noctua extension cable that ships in the box                   | £0               |
