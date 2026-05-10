@@ -93,6 +93,63 @@ If you observe issues:
 - **Don't extend wires beyond what's needed**. Long unshielded runs near the UPS's switching electronics will pick up noise that defeats the filter.
 - **Test on the bench first** if you can. Power the fan from a separate 12 V supply, scope the LRS line: should sit at <0.5 V steady when running, jump to >5 V when you stop the rotor.
 
+## Tidy perfboard build
+
+If you'd rather not have a cap with bare legs floating in heatshrink, mount the components on a small offcut of perfboard or stripboard (~15 × 20 mm is plenty) and Kapton-wrap the finished module. Mechanically more robust, easier to keep tidy, and easier to revisit if you want to retune.
+
+### Splice approach (what most people end up doing)
+
+The factory fan connector on the PCB is small and often hot-glued in place — don't wrestle with it. Instead:
+
+1. Cut the **stock fan's** wire close to the fan end, leaving the connector attached to the UPS PCB. You now have three short wires (red/+12 V, black/GND, yellow-or-white/LRS) coming out of the UPS, ready to splice.
+2. Take the **Noctua extension cable** that ships in the box and cut it at one end so you have four short wires (yellow/+12 V, black/GND, green/tach, blue/PWM) emerging.
+3. The perfboard sits between these two cut ends.
+
+This way the fan stays unmodified (you can return or repurpose it), the UPS PCB connector is left undisturbed, and the only thing you've sacrificed is the Noctua extension cable (~£5 to replace).
+
+### Layout
+
+```
+   UPS side                              Fan side
+   ────────                              ────────
+   +12 V ───────────────────────────── +12 V  (Noctua yellow)
+
+   GND ───────┬─────────────────────── GND    (Noctua black)
+              │
+             ─┴─  negative leg (white stripe)
+              ─
+             10 µF / 50 V
+              +   positive leg
+             ─┬─
+              │
+   LRS ───────┴─────────────────────── Tach   (Noctua green)
+
+                                       (Noctua blue/PWM — cut & insulated)
+```
+
+Three pads in, three pads out, one component bridging the LRS row to the GND row. The cap polarity is the only thing to get right — negative leg (white stripe / shorter lead) to GND.
+
+### Optional: speed reduction on the same board
+
+If you want to add a series resistor on the +12 V line to drop the fan speed (instead of using the bundled `NA-RC7` L.N.A. cable), add it inline on the +12 V row:
+
+| Resistor on +12 V | Approx fan voltage | Approx RPM (NF-A8) | Approx noise |
+| ------------------ | ------------------ | ------------------ | ------------ |
+| **0 Ω / wire link** | 12 V              | 2200               | 17.7 dB(A)   |
+| **~33 Ω, 1 W**     | ~10 V             | ~1750              | ~13 dB(A) — equivalent to L.N.A. |
+| **~56 Ω, 1 W**     | ~7 V              | ~1100              | ~7 dB(A) — equivalent to U.L.N.A. |
+
+Use **1 W** parts (or 2 W to be safe) — at 0.18 A through the resistor the dissipation peaks around 0.5 W on the U.L.N.A. value, and a quarter-watt part will run hot and brown the board over time.
+
+If you're going to fit the bundled L.N.A. cable on the +12 V line anyway, skip the resistor — just don't do both.
+
+### Wrap and mount
+
+1. Trim the perfboard so there are no exposed copper traces or component leads sticking proud — flush-cut everything.
+2. Wrap **two layers** of Kapton tape (30 µm amber polyimide), overlapping by half. Heatshrink also works if you have a tube big enough; Kapton handles the warm UPS interior better.
+3. Bring the three input and three output wires out of one short edge. Strain-relieve with a small zip-tie around the bundle just past the wrap.
+4. Mount inside the UPS with 3M VHB foam tape or a dab of hot glue, away from heatsinks and bus capacitors. The empty space behind the front bezel is usually generous.
+
 ## Reference
 
 The original write-up of this approach was for an Eaton 9PX 1500VA, which uses an identical Sanyo Denki LRS architecture. Florian Bernd captured the circuit simulation, scope traces, and reasoning at:
