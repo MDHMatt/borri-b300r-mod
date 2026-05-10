@@ -1,0 +1,89 @@
+# Borri B300R — example NUT configuration
+#
+# Copy to /etc/nut/ups.conf and adapt to your specific model.
+# Battery voltages differ between B300R variants — see the table below
+# and uncomment the block matching your unit.
+#
+# The B300R isn't explicitly listed in the NUT HCL but the related Borri
+# models (B400, B400R, B500, B500R, B500EVO) all use blazer_usb. The
+# B300R is the same OEM Voltronic platform and works with the same driver.
+#
+# Usage:
+#   sudo cp ups.conf.example /etc/nut/ups.conf
+#   sudo nano /etc/nut/ups.conf       # uncomment the right battery block
+#   sudo systemctl restart nut-server
+#   upsc borri@localhost              # confirm
+#
+# If blazer_usb won't enumerate, try in order:
+#   1. langid_fix = 0x0409
+#   2. subdriver = phoenix (also try cypress, ippon, krauler — needs vendorid+productid)
+#   3. nutdrv_qx instead of blazer_usb (more flexible, handles edge cases)
+#   4. blazer_ser via the DB9 RS232 port (2400 8N1)
+
+[borri]
+    driver = blazer_usb
+    port = auto
+    desc = "Borri B300R"
+
+    # ── Common workarounds for the Megatec OEM USB descriptor ───────────────
+    # Most of these UPSes enumerate as VID 0001 / PID 0000 with broken
+    # language ID descriptors. Uncomment if you see USB enumeration errors:
+    #
+    # langid_fix = 0x0409
+    # vendorid = 0001
+    # productid = 0000
+    # subdriver = phoenix
+
+    # ── Battery voltage thresholds for charge estimation ────────────────────
+    # The Q1 protocol doesn't report battery.charge directly — NUT estimates
+    # it from battery.voltage. Uncomment ONE block below matching your model:
+    #
+    # B300R-010-E (1 kVA wide-input, 24 V battery, 2× 12 V/9 Ah):
+    # default.battery.voltage.high = 27.6
+    # default.battery.voltage.low  = 22.0
+    #
+    # B300R-010-B (1 kVA standard, 36 V battery, 3× 12 V/7 Ah):
+    # default.battery.voltage.high = 41.4
+    # default.battery.voltage.low  = 33.0
+    #
+    # B300R-015-B (1.5 kVA, 36 V battery, 3× 12 V/9 Ah):
+    # default.battery.voltage.high = 41.4
+    # default.battery.voltage.low  = 33.0
+    #
+    # B300R-020-B (2 kVA, 72 V battery, 6× 12 V/7 Ah):
+    # default.battery.voltage.high = 82.8
+    # default.battery.voltage.low  = 66.0
+    #
+    # B300R-030-B (3 kVA, 72 V battery, 6× 12 V/9 Ah):
+    default.battery.voltage.high = 82.8
+    default.battery.voltage.low  = 66.0
+
+    # ── Runtime estimation calibration (optional, improves accuracy) ────────
+    # runtimecal pairs: "<full-load-runtime-sec>,<full-load-pct> <half-load-runtime-sec>,<half-load-pct>"
+    # Per manual table 7, factory backup time at full load:
+    #   010-E: 3 min   →  runtimecal = 180,100 480,50
+    #   010-B: 4.5 min →  runtimecal = 270,100 720,50
+    #   015-B: 3 min   →  runtimecal = 180,100 480,50
+    #   020-B: 4.5 min →  runtimecal = 270,100 720,50
+    #   030-B: 3 min   →  runtimecal = 180,100 480,50
+    # Half-load values are estimates — refine with your own observations.
+    # runtimecal = 180,100 480,50
+
+    # chargetime: time to recharge battery to 90% from empty (per manual table 7)
+    #   010-E: 8 hours →  28800 sec
+    #   010-B: 3 hours →  10800 sec
+    #   015-B: 4 hours →  14400 sec
+    #   020-B: 3 hours →  10800 sec
+    #   030-B: 4 hours →  14400 sec
+    # chargetime = 14400
+
+# ── Optional: SNMP / Webpower card (if fitted in the intelligent slot) ──────
+# Uncomment and set the card's IP address.
+# Not available on the B300R-010-E variant.
+#
+# [borri-snmp]
+#     driver = snmp-ups
+#     port = 192.168.1.50
+#     community = public
+#     snmp_version = v1
+#     mibs = mge        # try mge first; fall back to ietf or rfc1628
